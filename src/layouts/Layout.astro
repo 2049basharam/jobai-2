@@ -1,0 +1,40 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/globals.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  showNav?: boolean;
+  showFooter?: boolean;
+}
+
+const {
+  title = 'JobAI — Future-Tech Candidate Experience & Career Intelligence',
+  description = 'AI career intelligence platform that understands your skills, ambitions, opportunities, and career trajectory.',
+  showNav = true,
+  showFooter = true,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="min-h-screen flex flex-col bg-jobai-bg text-jobai-text font-sans antialiased selection:bg-indigo-100 selection:text-indigo-900">
+    {showNav && <Header />}
+    <main class="flex-grow">
+      <slot />
+    </main>
+    {showFooter && <Footer />}
+  </body>
+</html>

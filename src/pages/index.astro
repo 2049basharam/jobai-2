@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { HeroSection } from '../components/landing/HeroSection';
+import { ProfessionalIdentitySection } from '../components/landing/ProfessionalIdentitySection';
+import { OpportunityDiscoverySection } from '../components/landing/OpportunityDiscoverySection';
+import { SkillGapSection } from '../components/landing/SkillGapSection';
+import { ApplicationIntelligenceSection } from '../components/landing/ApplicationIntelligenceSection';
+import { CopilotPreviewSection } from '../components/landing/CopilotPreviewSection';
+import { FinalCTASection } from '../components/landing/FinalCTASection';
+import { IntelligenceDock } from '../components/intelligence/IntelligenceDock';
+import { FutureTechBackground } from '../components/intelligence/FutureTechBackground';
+---
+
+<Layout title="JobAI — Future-Tech Candidate Experience & Career Intelligence">
+  <div class="relative overflow-hidden">
+    <FutureTechBackground client:load />
+    <HeroSection client:load />
+    <ProfessionalIdentitySection client:load />
+    <OpportunityDiscoverySection client:load />
+    <SkillGapSection client:load />
+    <ApplicationIntelligenceSection client:load />
+    <CopilotPreviewSection client:load />
+    <FinalCTASection client:load />
+    <IntelligenceDock client:load />
+  </div>
+</Layout>
