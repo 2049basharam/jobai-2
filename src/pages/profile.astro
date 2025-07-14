@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ProfileShell } from '../components/profile/ProfileShell';
+---
+
+<Layout title="Professional Identity Workspace — JobAI" showNav={false} showFooter={false}>
+  <div class="min-h-[calc(100vh-4.5rem)] bg-jobai-bg relative overflow-hidden pb-16">
+    {/* Spatial Intelligence Canvas Background */}
+    <div class="absolute inset-0 bg-crosshair-pattern opacity-40 pointer-events-none" />
+    <div class="absolute top-10 left-10 w-96 h-96 bg-cyan-200/20 rounded-full blur-3xl pointer-events-none" />
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl pointer-events-none" />
+
+    <div class="relative z-10">
+      <ProfileShell client:load />
+    </div>
+  </div>
+</Layout>
