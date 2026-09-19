@@ -1,0 +1,80 @@
+---
+import { Sparkles } from 'lucide-react';
+---
+
+<footer class="bg-slate-900 text-slate-300 border-t border-slate-800 pt-16 pb-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+      <!-- Brand & Mission -->
+      <div class="md:col-span-1 space-y-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+            <Sparkles className="w-4 h-4 text-cyan-200" />
+          </div>
+          <span class="font-heading font-bold text-lg text-white">JobAI</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Next-generation AI candidate career intelligence platform. Powering careers with spatial skill graphs, semantic matching, and trajectory modeling.
+        </p>
+        <div class="flex items-center gap-2 text-[11px] text-cyan-400 font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          System Operational • Engine Active
+        </div>
+      </div>
+
+      <!-- Candidate Features -->
+      <div class="space-y-3">
+        <h5 class="text-xs font-bold text-white uppercase tracking-wider font-heading">
+          Candidate Platform
+        </h5>
+        <ul class="space-y-2 text-xs">
+          <li><a href="/#intelligence" class="hover:text-white transition-colors">Skill Passport</a></li>
+          <li><a href="/#discovery" class="hover:text-white transition-colors">Semantic Job Matching</a></li>
+          <li><a href="/#skill-gap" class="hover:text-white transition-colors">Career Trajectory Analysis</a></li>
+          <li><a href="/#copilot" class="hover:text-white transition-colors">AI Career Copilot</a></li>
+        </ul>
+      </div>
+
+      <!-- Enterprise & Architecture -->
+      <div class="space-y-3">
+        <h5 class="text-xs font-bold text-white uppercase tracking-wider font-heading">
+          Architecture & AI
+        </h5>
+        <ul class="space-y-2 text-xs">
+          <li><span class="text-slate-400">Google Gemini AI Engine</span></li>
+          <li><span class="text-slate-400">Supabase pgvector Database</span></li>
+          <li><span class="text-slate-400">FastAPI Microservices</span></li>
+          <li><span class="text-slate-400">SOC2 Type II Security Standard</span></li>
+        </ul>
+      </div>
+
+      <!-- Access -->
+      <div class="space-y-3">
+        <h5 class="text-xs font-bold text-white uppercase tracking-wider font-heading">
+          Get Started
+        </h5>
+        <p class="text-xs text-slate-400">
+          Begin evolving your career identity with real-time AI intelligence.
+        </p>
+        <div class="pt-2">
+          <a
+            href="/register"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-colors shadow-jobai-sm"
+          >
+            Create Candidate Account
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div class="border-t border-slate-800/80 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© {new Date().getFullYear()} JobAI Intelligence Inc. All rights reserved.</p>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-slate-400 transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-slate-400 transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-slate-400 transition-colors">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>

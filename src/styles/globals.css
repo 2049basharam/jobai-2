@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
+    --color-primary: #1E40AF;
+    --color-accent: #4F46E5;
+    --color-cyan: #06B6D4;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-size: 32px 32px;
+    background-image: 
+      linear-gradient(to right, rgba(15, 23, 42, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+  }
+
+  .bg-grid-pattern-dark {
+    background-size: 32px 32px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  }
+
+  .bg-dots-pattern {
+    background-image: radial-gradient(rgba(15, 23, 42, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* UIverse-Inspired Technical Blueprint & Crosshair Patterns */
+  .bg-crosshair-pattern {
+    background-size: 40px 40px;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.22) 1.5px, transparent 0),
+      linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+  }
+
+  .bg-crosshair-pattern-dark {
+    background-size: 40px 40px;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(6, 182, 212, 0.45) 1.5px, transparent 0),
+      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  }
+
+  .bg-blueprint-pattern {
+    background-size: 48px 48px;
+    background-image:
+      linear-gradient(to right, rgba(30, 64, 175, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(30, 64, 175, 0.07) 1px, transparent 1px),
+      radial-gradient(circle at 24px 24px, rgba(6, 182, 212, 0.15) 2px, transparent 0);
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #0F172A 0%, #1E40AF 50%, #06B6D4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-cyan {
+    background: linear-gradient(135deg, #0284C7 0%, #06B6D4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Tech-Brutalist Custom Utilities */
+  .brutalist-card {
+    background-color: #FFFFFF;
+    border: 2px solid #0F172A;
+    box-shadow: 4px 4px 0px 0px #0F172A;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .brutalist-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px #06B6D4;
+  }
+
+  .brutalist-card-dark {
+    background-color: #0B0F19;
+    border: 2px solid #1E293B;
+    box-shadow: 4px 4px 0px 0px #06B6D4;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .brutalist-card-dark:hover {
+    border-color: #06B6D4;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px #4F46E5;
+  }
+
+  .brutalist-btn {
+    border: 2px solid #0F172A;
+    box-shadow: 3px 3px 0px 0px #0F172A;
+    transition: all 0.15s ease-in-out;
+  }
+
+  .brutalist-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0px 0px #06B6D4;
+  }
+
+  .brutalist-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px 0px #0F172A;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border: 2px solid #0F172A;
+    box-shadow: 4px 4px 0px 0px #0F172A;
+  }
+
+  /* Pure CSS Animated SVG Beam Effect */
+  .animated-beam {
+    stroke-dasharray: 8, 8;
+    animation: dashMove 12s linear infinite;
+  }
+
+  @keyframes dashMove {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Node Activation Glow */
+  .node-active-ring {
+    animation: nodeRingPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes nodeRingPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(6, 182, 212, 0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-beam,
+  .node-active-ring,
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
