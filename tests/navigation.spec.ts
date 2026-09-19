@@ -79,12 +79,11 @@ test.describe('JobAI Candidate Platform — Global Spatial Application Navigatio
     await expect(oppSector).toContainText('Opportunities');
     await expect(oppSector).toBeEnabled();
 
-    // Verify Applications sector
+    // Verify Applications sector is active
     const appSector = page.locator('#radial-sector-applications');
     await expect(appSector).toBeVisible();
     await expect(appSector).toContainText('Applications');
-    await expect(appSector).toContainText('MODULE_STANDBY');
-    await expect(appSector).toBeDisabled();
+    await expect(appSector).toBeEnabled();
   });
 
   test('RadialNavMenu navigates cleanly between authenticated application routes', async ({ page }) => {

@@ -40,7 +40,7 @@ export const GLOBAL_SECTORS: RadialSector[] = [
   { id: 'resume', label: 'Resume', code: '03', icon: FileUp, href: '/resume' },
   { id: 'skills', label: 'Skill Passport', code: '04', icon: Boxes, href: '/skills' },
   { id: 'opportunities', label: 'Opportunities', code: '05', icon: Target, href: '/opportunities' },
-  { id: 'applications', label: 'Applications', code: '06', icon: Send, href: '#', isStandby: true, badge: 'MODULE_STANDBY' },
+  { id: 'applications', label: 'Applications', code: '06', icon: Send, href: '/applications' },
   { id: 'career', label: 'Career Vector', code: '07', icon: GitMerge, href: '#', isStandby: true, badge: 'MODULE_STANDBY' },
   { id: 'copilot', label: 'AI Copilot', code: '08', icon: Bot, href: '#copilot', isCopilotTrigger: true, badge: '⌘K' },
 ];
@@ -120,6 +120,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
     if (currentPath === '/resume') return 'resume';
     if (currentPath === '/skills') return 'skills';
     if (currentPath === '/opportunities') return 'opportunities';
+    if (currentPath === '/applications') return 'applications';
     return 'dashboard';
   };
 
@@ -132,6 +133,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
     if (currentPath === '/resume') return 'RESUME_ACTIVE';
     if (currentPath === '/skills') return 'SKILLS_ACTIVE';
     if (currentPath === '/opportunities') return 'OPPORTUNITY_ACTIVE';
+    if (currentPath === '/applications') return 'APPLICATIONS_ACTIVE';
     return 'JOB_AI_HUB';
   };
 

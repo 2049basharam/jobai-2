@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ApplicationsWorkspace } from '../components/applications/ApplicationsWorkspace';
+---
+
+<Layout title="Application Lifecycle & Command Center — JobAI Candidate Platform V2">
+  <main class="min-h-screen bg-slate-100">
+    <ApplicationsWorkspace client:only="react" />
+  </main>
+</Layout>
