@@ -242,7 +242,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
 
       {/* Floating Radial Arc Menu Container attached to Left Edge */}
       <div
-        className="fixed left-0 top-1/2 -translate-y-1/2 z-[100] font-mono select-none pointer-events-none"
+        className="fixed left-0 top-1/2 -translate-y-1/2 w-0 h-0 z-[100] font-mono select-none pointer-events-none"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -254,7 +254,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
             e.stopPropagation();
             setIsOpen(!isOpen);
           }}
-          className="relative z-[102] group cursor-pointer flex items-center pointer-events-auto bg-transparent border-0 p-0 outline-none"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-[102] group cursor-pointer flex items-center pointer-events-auto bg-transparent border-0 p-0 outline-none"
           title="Toggle Spatial Radial Application Navigator"
         >
           <div
@@ -277,10 +277,13 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
         {/* SVG Rays & Arc Guide (Visible when Open) */}
         {isOpen && (
           <svg
-            className="absolute left-0 top-1/2 -translate-y-1/2 overflow-visible pointer-events-none z-[95]"
-            width={RADIUS + 180}
-            height={RADIUS * 2 + 100}
-            viewBox={`0 ${-RADIUS - 50} ${RADIUS + 180} ${RADIUS * 2 + 100}`}
+            className="absolute overflow-visible pointer-events-none z-[95]"
+            style={{
+              left: '24px',
+              top: '0px',
+              width: '1px',
+              height: '1px',
+            }}
           >
             <defs>
               <linearGradient id="floatingArcGlow" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -322,7 +325,10 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
         )}
 
         {/* Floating Radial Node Array */}
-        <div className={`absolute left-0 top-0 z-[101] transition-all duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div
+          className={`absolute z-[101] transition-all duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          style={{ left: '24px', top: '0px' }}
+        >
           {GLOBAL_SECTORS.map((sector, index) => {
             const { x, y, angleDeg } = getSectorPos(index, GLOBAL_SECTORS.length);
             const isActive = activeSectorId === sector.id;
@@ -365,9 +371,13 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   <span className="sr-only">[{sector.badge || sector.code}] {sector.label}</span>
                 </button>
 
-                {/* Angled Pill Badge Label floating alongside Node */}
+                {/* Angled Pill Badge Label floating alongside Node (Displays on cursor hover / active) */}
                 <div
-                  className={`absolute left-14 top-1/2 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                  className={`absolute left-14 top-1/2 transition-all duration-200 ${
+                    isHovered || isActive
+                      ? 'opacity-100 scale-100 pointer-events-auto'
+                      : 'opacity-0 scale-95 pointer-events-none'
+                  }`}
                   style={{
                     transform: `translateY(-50%) rotate(${angleDeg}deg)`,
                     transformOrigin: 'left center',

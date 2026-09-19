@@ -106,9 +106,10 @@ test.describe('Phase 7 — Opportunity Intelligence Workspace (/opportunities)',
     // Wait for React state update to complete (title changes to Unsave Opportunity)
     await expect(page.locator('#save-opp-opp-001[title="Unsave Opportunity"]')).toBeVisible({ timeout: 10000 });
 
-    // Check saved count filter button has updated label
+    // Check saved count filter button has updated label (1)
     const savedFilterBtn = page.locator('#toggle-saved-filter');
     await expect(savedFilterBtn).toBeVisible({ timeout: 10000 });
+    await expect(savedFilterBtn).toContainText('(1)', { timeout: 10000 });
 
     // Toggle saved filter
     await savedFilterBtn.scrollIntoViewIfNeeded();

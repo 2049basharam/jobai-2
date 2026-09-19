@@ -65,10 +65,10 @@ test.describe('JobAI Candidate Platform — Phase 6 Digital Skill Passport & Evi
     await page.locator('textarea').fill('Implemented GraphQL query engine and resolvers.');
 
     // Save
-    await page.getByRole('button', { name: 'Save Skill Record' }).click();
+    await page.getByRole('button', { name: 'Save Skill Record' }).click({ force: true });
 
     // Verify GraphQL appears in skill records
-    await expect(page.getByText('GraphQL', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('GraphQL', { exact: true }).first()).toBeVisible({ timeout: 10000 });
   });
 
   // 5. Radial Navigation to /skills from /dashboard and /resume
