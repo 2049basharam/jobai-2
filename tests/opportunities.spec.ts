@@ -103,6 +103,9 @@ test.describe('Phase 7 — Opportunity Intelligence Workspace (/opportunities)',
     const bookmarkBtn = page.locator('#save-opp-opp-001');
     await bookmarkBtn.click({ force: true });
 
+    // Wait for React state update to complete (title changes to Unsave Opportunity)
+    await expect(page.locator('#save-opp-opp-001[title="Unsave Opportunity"]')).toBeVisible();
+
     // Check saved count filter button has updated label
     const savedFilterBtn = page.locator('#toggle-saved-filter');
     await expect(savedFilterBtn).toBeVisible();
