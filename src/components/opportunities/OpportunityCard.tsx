@@ -85,7 +85,7 @@ export const OpportunityCard: React.FC<Props> = ({
               e.stopPropagation();
               onToggleSave(opportunity.id);
             }}
-            className={`w-9 h-9 rounded-xl border-2 border-slate-900 flex items-center justify-center shrink-0 transition-all ${
+            className={`w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl border-2 border-slate-900 flex items-center justify-center shrink-0 z-10 transition-all ${
               isSaved
                 ? 'bg-cyan-400 text-slate-950 shadow-[2px_2px_0px_0px_#0F172A]'
                 : 'bg-slate-50 text-slate-600 hover:bg-slate-100'

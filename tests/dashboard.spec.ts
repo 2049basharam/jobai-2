@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('JobAI Candidate Platform - Phase 3 Candidate Intelligence Dashboard', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => window.localStorage.clear());
+  });
+
   // 1. Dashboard Render & Authoritative Identity Test
   test('Dashboard renders candidate identity surface, deterministic profile state, and user vectors', async ({ page }) => {
     await page.goto('/dashboard');
