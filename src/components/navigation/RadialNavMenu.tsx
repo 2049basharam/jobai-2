@@ -177,12 +177,12 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
     }
   };
 
-  // Radial Geometry Calculations for 8 Sectors in a Spacious Semi-Circular Arc
-  const CX = 45;
-  const CY = 230;
-  const RADIUS = 235;
-  const START_ANGLE = -62; // degrees
-  const END_ANGLE = 62; // degrees
+  // Radial Geometry Calculations: Left-Anchored Semi-Circular Arc with Rotated Rays
+  const CX = 25;
+  const CY = 260;
+  const RADIUS = 230;
+  const START_ANGLE = -68; // degrees
+  const END_ANGLE = 68; // degrees
 
   const getSectorPos = (index: number, total: number) => {
     const angleDeg = START_ANGLE + (index * (END_ANGLE - START_ANGLE)) / (total - 1);
@@ -199,14 +199,14 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
       {/* Radial Spatial Navigator Modal Backdrop & Overlay Canvas */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-[90] bg-slate-950/75 backdrop-blur-md flex items-start justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-200"
+          className="fixed inset-0 z-[90] bg-slate-950/80 backdrop-blur-md flex items-center justify-start p-2 sm:p-6 overflow-hidden animate-in fade-in duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) setIsOpen(false);
           }}
         >
-          <div className="relative mt-12 sm:mt-14 bg-slate-950/95 backdrop-blur-xl border-2 border-slate-800 shadow-[12px_12px_0px_0px_#06B6D4] rounded-3xl p-4 sm:p-5 w-full max-w-3xl sm:max-w-4xl font-mono text-slate-100">
+          <div className="relative bg-slate-950/95 backdrop-blur-2xl border-2 border-slate-800 shadow-[12px_12px_0px_0px_#06B6D4] rounded-3xl p-4 sm:p-5 w-full max-w-4xl font-mono text-slate-100 overflow-hidden">
             {/* Top Toolbar */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-cyan-950 text-cyan-400 flex items-center justify-center border border-cyan-500/40 shadow-inner">
                   <Compass className="w-4.5 h-4.5" />
@@ -215,7 +215,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
                     SPATIAL_RADIAL_NAVIGATOR
                     <span className="px-2 py-0.5 text-[9px] bg-cyan-950 text-cyan-400 rounded-md border border-cyan-500/40 font-extrabold">
-                      V2.0_SPACIOUS_ARC
+                      V2.0_LEFT_ARC
                     </span>
                   </h3>
                   <p className="text-[10px] sm:text-xs text-slate-400 font-mono">1 radial sector = 1 full spatial workspace</p>
@@ -231,7 +231,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                     className={`px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-all ${
                       viewMode === 'radial' ? 'bg-cyan-400 text-slate-950 font-bold shadow-sm' : 'text-slate-400 hover:text-white'
                     }`}
-                    title="Spacious Radial Arc View"
+                    title="Left Radial Arc View"
                   >
                     <Disc className="w-3.5 h-3.5" />
                     <span>ARC</span>
@@ -263,11 +263,11 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
             {viewMode === 'radial' ? (
               <div className="space-y-3">
                 {/* Interactive SVG Arc Canvas */}
-                <div className="relative w-full h-[460px] overflow-hidden rounded-2xl bg-slate-900/90 border border-slate-800 shadow-inner">
+                <div className="relative w-full h-[500px] overflow-hidden rounded-2xl bg-slate-900/90 border border-slate-800 shadow-inner">
                   {/* Background Grid Pattern */}
                   <div className="absolute inset-0 bg-crosshair-pattern-dark opacity-40"></div>
 
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 680 460">
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 760 500">
                     <defs>
                       <linearGradient id="radialArcGlow" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.8" />
@@ -291,7 +291,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                       strokeDasharray="4 4"
                     />
 
-                    {/* Radial Connector Rays from Hub to Node */}
+                    {/* Radial Connector Rays from Left Edge Hub to Node */}
                     {GLOBAL_SECTORS.map((sector, index) => {
                       const { x, y } = getSectorPos(index, GLOBAL_SECTORS.length);
                       const isActive = activeSectorId === sector.id;
@@ -305,11 +305,10 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                             x2={x}
                             y2={y}
                             stroke={isActive || isHovered ? '#06B6D4' : '#334155'}
-                            strokeWidth={isActive || isHovered ? '2' : '1'}
+                            strokeWidth={isActive || isHovered ? '2.5' : '1.5'}
                             opacity={isActive || isHovered ? '0.9' : '0.4'}
                             className={isActive ? 'animated-beam' : ''}
                           />
-                          {/* Radial Wedge Slice Indicator */}
                           {(isActive || isHovered) && (
                             <circle cx={x} cy={y} r="26" fill="#06B6D4" fillOpacity="0.15" filter="url(#glow)" />
                           )}
@@ -317,23 +316,29 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                       );
                     })}
 
-                    {/* Central Radial Core Wheel */}
-                    <circle cx={CX} cy={CY} r="34" fill="#0F172A" stroke="#06B6D4" strokeWidth="3" filter="url(#glow)" />
-                    <circle cx={CX} cy={CY} r="26" fill="#0284C7" fillOpacity="0.25" />
-                    <circle cx={CX} cy={CY} r="8" fill="#06B6D4" className="animate-pulse" />
+                    {/* Semi-Circular Left Hub Anchor Node */}
+                    <path
+                      d={`M ${CX} ${CY - 50} A 50 50 0 0 1 ${CX} ${CY + 50} Z`}
+                      fill="#0F172A"
+                      stroke="#06B6D4"
+                      strokeWidth="3"
+                      filter="url(#glow)"
+                    />
+                    <circle cx={CX + 12} cy={CY} r="18" fill="#0284C7" fillOpacity="0.3" />
+                    <circle cx={CX + 12} cy={CY} r="7" fill="#06B6D4" className="animate-pulse" />
                   </svg>
 
-                  {/* Central Hub Label */}
+                  {/* Central Left Edge Hub Label */}
                   <div
                     className="absolute z-20 font-mono text-[9px] font-bold text-cyan-400 bg-slate-950/90 px-2 py-0.5 rounded border border-cyan-500/40 shadow-lg pointer-events-none"
-                    style={{ left: `${CX - 28}px`, top: `${CY + 40}px` }}
+                    style={{ left: `${CX + 2}px`, top: `${CY + 58}px` }}
                   >
                     CORE_HUB
                   </div>
 
-                  {/* Render 8 Radial Floating Circular Nodes & Angled Pill Badges */}
+                  {/* Render 8 Radial Floating Circular Nodes & Angled Pill Badges Rotated along Rays */}
                   {GLOBAL_SECTORS.map((sector, index) => {
-                    const { x, y } = getSectorPos(index, GLOBAL_SECTORS.length);
+                    const { x, y, angleDeg } = getSectorPos(index, GLOBAL_SECTORS.length);
                     const Icon = sector.icon;
                     const isActive = activeSectorId === sector.id;
                     const isHovered = hoveredSector === sector.id;
@@ -348,7 +353,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                           top: `${y - 20}px`,
                         }}
                       >
-                        {/* Unified Sector Button containing Icon Node AND Pill Tag */}
+                        {/* Sector Button */}
                         <button
                           type="button"
                           id={`radial-sector-${sector.id}`}
@@ -356,14 +361,14 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                           onClick={() => handleSectorClick(sector)}
                           onMouseEnter={() => setHoveredSector(sector.id)}
                           onMouseLeave={() => setHoveredSector(null)}
-                          className={`group inline-flex items-center gap-2 text-left focus:outline-none transition-all ${
+                          className={`group relative flex items-center focus:outline-none ${
                             isStandby ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                           }`}
                           title={`${sector.label} [${sector.code}]`}
                         >
                           {/* Circular Icon Node */}
                           <div
-                            className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 shrink-0 ${
+                            className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 shrink-0 z-20 ${
                               isStandby
                                 ? 'bg-slate-900/90 text-slate-500 border-slate-700'
                                 : isActive
@@ -377,30 +382,38 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                             {isStandby ? <Lock className="w-4 h-4 text-slate-500" /> : <Icon className="w-4.5 h-4.5 stroke-[2.2]" />}
                           </div>
 
-                          {/* Angled Radial Pill Tag / Badge extending to the right */}
+                          {/* Angled Radial Pill Badge Rotated Along Ray Direction */}
                           <div
-                            className={`whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono border backdrop-blur-md transition-all ${
-                              isStandby
-                                ? 'bg-slate-950/90 text-slate-500 border-slate-800'
-                                : isActive
-                                ? 'bg-cyan-950/90 text-cyan-300 border-cyan-400 font-bold shadow-[2px_2px_0px_0px_#06B6D4]'
-                                : isHovered
-                                ? 'bg-slate-900 text-white border-cyan-400 translate-x-1'
-                                : 'bg-slate-950/80 text-slate-300 border-slate-800 group-hover:border-slate-600'
-                            }`}
+                            className="absolute left-11 top-1/2 whitespace-nowrap transition-transform duration-200 z-10"
+                            style={{
+                              transformOrigin: 'left center',
+                              transform: `translateY(-50%) rotate(${angleDeg}deg)`,
+                            }}
                           >
-                            <span className={isActive ? 'text-cyan-400 font-bold' : 'text-slate-400'}>
-                              [{sector.code}]
-                            </span>
-                            <span className="font-semibold">{sector.label}</span>
-                            {isStandby && (
-                              <span className="text-[9px] px-1 py-0.5 rounded bg-slate-900 text-amber-400 border border-amber-500/30 font-bold ml-0.5">
-                                MODULE_STANDBY
+                            <div
+                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono border backdrop-blur-md transition-all shadow-md ${
+                                isStandby
+                                  ? 'bg-slate-950/90 text-slate-500 border-slate-800'
+                                  : isActive
+                                  ? 'bg-cyan-950/95 text-cyan-300 border-cyan-400 font-bold shadow-[0_0_12px_rgba(6,182,212,0.5)]'
+                                  : isHovered
+                                  ? 'bg-slate-900 text-white border-cyan-400 translate-x-1'
+                                  : 'bg-slate-950/90 text-slate-300 border-slate-800 group-hover:border-slate-600'
+                              }`}
+                            >
+                              <span className={isActive ? 'text-cyan-400 font-bold' : 'text-slate-400'}>
+                                [{sector.code}]
                               </span>
-                            )}
-                            {!isStandby && (
-                              <ArrowUpRight className={`w-3 h-3 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
-                            )}
+                              <span className="font-semibold">{sector.label}</span>
+                              {isStandby && (
+                                <span className="text-[9px] px-1 py-0.5 rounded bg-slate-900 text-amber-400 border border-amber-500/30 font-bold ml-0.5">
+                                  MODULE_STANDBY
+                                </span>
+                              )}
+                              {!isStandby && (
+                                <ArrowUpRight className={`w-3 h-3 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
+                              )}
+                            </div>
                           </div>
                         </button>
                       </div>
@@ -408,7 +421,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   })}
                 </div>
 
-                {/* Focused Sector Live Description Panel (Positioned Cleanly Below Canvas) */}
+                {/* Focused Sector Live Description Panel */}
                 {focusedSector && (
                   <div className="bg-slate-900 border border-slate-800 rounded-xl p-3 backdrop-blur-md flex items-center justify-between text-xs font-mono">
                     <div className="flex items-center gap-3 truncate pr-2">
@@ -544,7 +557,22 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
         </div>
       )}
 
-      {/* Top Floating Control Hub Trigger Button */}
+      {/* Persistent Left-Edge Semi-Circular Hub Anchor Trigger */}
+      <div
+        className="fixed left-0 top-1/2 -translate-y-1/2 z-[100] font-mono select-none hidden md:block"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="relative group cursor-pointer flex items-center">
+          <div className="w-10 h-28 rounded-r-full bg-slate-950/90 backdrop-blur-md border-2 border-l-0 border-cyan-500/60 shadow-[4px_0px_20px_rgba(6,182,212,0.5)] flex flex-col items-center justify-center gap-2 group-hover:w-12 group-hover:border-cyan-400 transition-all duration-200">
+            <div className="w-6 h-6 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform">
+              <Compass className="w-4 h-4 stroke-[2.5] group-hover:rotate-45 transition-transform" />
+            </div>
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          </div>
+        </div>
+      </div>
+
+      {/* Top Floating Control Hub Trigger Button (Mobile & Test Compatible) */}
       <div className="fixed z-[100] left-4 top-4 sm:left-6 sm:top-4 font-mono select-none">
         <button
           type="button"
