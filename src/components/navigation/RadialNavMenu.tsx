@@ -70,6 +70,29 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const getActivePrimarySectorId = (): string => {
+    if (currentPath === '/dashboard') return 'dashboard';
+    if (currentPath === '/profile') return 'identity';
+    if (currentPath === '/resume') return 'resume';
+    if (currentPath === '/skills') return 'skills';
+    if (currentPath === '/opportunities') return 'opportunities';
+    if (currentPath === '/applications') return 'applications';
+    return 'dashboard';
+  };
+
+  const activeSectorId = getActivePrimarySectorId();
+  const [stickySectorId, setStickySectorId] = useState<string>(activeSectorId);
+
+  // Sync sticky highlight when route or menu open state changes
+  useEffect(() => {
+    if (isOpen) {
+      setStickySectorId((prev) => prev || activeSectorId);
+    } else {
+      setStickySectorId(activeSectorId);
+      setHoveredSector(null);
+    }
+  }, [isOpen, activeSectorId]);
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
@@ -101,7 +124,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
     }
     hoverTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 400);
+    }, 600);
   };
 
   // Sync active route & hash derived state
@@ -148,18 +171,6 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, [activeRoute]);
-
-  const getActivePrimarySectorId = (): string => {
-    if (currentPath === '/dashboard') return 'dashboard';
-    if (currentPath === '/profile') return 'identity';
-    if (currentPath === '/resume') return 'resume';
-    if (currentPath === '/skills') return 'skills';
-    if (currentPath === '/opportunities') return 'opportunities';
-    if (currentPath === '/applications') return 'applications';
-    return 'dashboard';
-  };
-
-  const activeSectorId = getActivePrimarySectorId();
 
   const getHubTag = (): string => {
     if (currentPath === '/dashboard') return 'DASHBOARD_ACTIVE';
@@ -254,6 +265,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
             e.stopPropagation();
             setIsOpen(!isOpen);
           }}
+          onMouseEnter={handleMouseEnter}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-[102] group cursor-pointer flex items-center pointer-events-auto bg-transparent border-0 p-0 outline-none"
           title="Toggle Spatial Radial Application Navigator"
         >
@@ -277,6 +289,8 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
         {/* SVG Rays & Arc Guide (Visible when Open) */}
         {isOpen && (
           <svg
+            data-sticky-sector={stickySectorId}
+            data-hovered-sector={hoveredSector || ''}
             className="absolute overflow-visible pointer-events-none z-[95]"
             style={{
               left: '24px',
@@ -292,6 +306,15 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
               </linearGradient>
             </defs>
 
+            {/* Invisible Radial Arc Hit Target capturing mouse hover across arc zone */}
+            <path
+              d={`M 0 0 L ${300 * Math.cos((-75 * Math.PI) / 180)} ${300 * Math.sin((-75 * Math.PI) / 180)} A 300 300 0 0 1 ${300 * Math.cos((75 * Math.PI) / 180)} ${300 * Math.sin((75 * Math.PI) / 180)} Z`}
+              fill="transparent"
+              className="pointer-events-auto cursor-default"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            />
+
             {/* Guide Arc */}
             <path
               d={`M ${RADIUS * Math.cos((START_ANGLE * Math.PI) / 180)} ${RADIUS * Math.sin((START_ANGLE * Math.PI) / 180)} A ${RADIUS} ${RADIUS} 0 0 1 ${RADIUS * Math.cos((END_ANGLE * Math.PI) / 180)} ${RADIUS * Math.sin((END_ANGLE * Math.PI) / 180)}`}
@@ -305,8 +328,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
             {/* Connecting Rays */}
             {GLOBAL_SECTORS.map((sector, index) => {
               const { x, y } = getSectorPos(index, GLOBAL_SECTORS.length);
-              const isActive = activeSectorId === sector.id;
-              const isHovered = hoveredSector === sector.id;
+              const isHighlighted = stickySectorId === sector.id;
 
               return (
                 <line
@@ -315,9 +337,9 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   y1="0"
                   x2={x}
                   y2={y}
-                  stroke={isActive || isHovered ? '#06B6D4' : '#334155'}
-                  strokeWidth={isActive || isHovered ? '2.5' : '1.5'}
-                  opacity={isActive || isHovered ? '0.9' : '0.4'}
+                  stroke={isHighlighted ? '#06B6D4' : '#334155'}
+                  strokeWidth={isHighlighted ? '2.5' : '1.5'}
+                  opacity={isHighlighted ? '0.9' : '0.4'}
                 />
               );
             })}
@@ -333,6 +355,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
             const { x, y, angleDeg } = getSectorPos(index, GLOBAL_SECTORS.length);
             const isActive = activeSectorId === sector.id;
             const isHovered = hoveredSector === sector.id;
+            const isHighlighted = stickySectorId === sector.id;
             const Icon = sector.icon;
             const isStandby = sector.isStandby;
 
@@ -347,7 +370,11 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   transitionDelay: `${isOpen ? index * 30 : 0}ms`,
                   opacity: isOpen ? 1 : 0,
                 }}
-                onMouseEnter={() => setHoveredSector(sector.id)}
+                onMouseEnter={() => {
+                  handleMouseEnter();
+                  setHoveredSector(sector.id);
+                  setStickySectorId(sector.id);
+                }}
                 onMouseLeave={() => setHoveredSector(null)}
               >
                 {/* Circular Icon Button Node */}
@@ -359,11 +386,9 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 shadow-xl group outline-none relative z-10 ${
                     isStandby
                       ? 'bg-slate-900/90 text-slate-600 border-slate-800 cursor-not-allowed'
-                      : isActive
+                      : isHighlighted
                       ? 'bg-cyan-400 text-slate-950 border-white shadow-[0_0_20px_rgba(6,182,212,0.8)] scale-110'
-                      : isHovered
-                      ? 'bg-cyan-500 text-slate-950 border-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.6)] scale-110'
-                      : 'bg-slate-950/95 text-cyan-400 border-cyan-500/50 hover:border-cyan-400 hover:text-white shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                      : 'bg-slate-950/95 text-cyan-400 border-cyan-500/50 hover:border-cyan-400 hover:text-white shadow-[0_0_10px_rgba(6,182,212,0.3)] opacity-70'
                   }`}
                   title={`${sector.label} — ${sector.description}`}
                 >
@@ -371,10 +396,10 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                   <span className="sr-only">[{sector.badge || sector.code}] {sector.label}</span>
                 </button>
 
-                {/* Angled Pill Badge Label floating alongside Node (Displays on cursor hover / active) */}
+                {/* Angled Pill Badge Label floating alongside Node (Displays STRICTLY on cursor hover) */}
                 <div
                   className={`absolute left-14 top-1/2 transition-all duration-200 ${
-                    isHovered || isActive
+                    isHovered
                       ? 'opacity-100 scale-100 pointer-events-auto'
                       : 'opacity-0 scale-95 pointer-events-none'
                   }`}
