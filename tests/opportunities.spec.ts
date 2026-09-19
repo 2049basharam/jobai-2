@@ -93,8 +93,14 @@ test.describe('Phase 7 — Opportunity Intelligence Workspace (/opportunities)',
 
   test('7. toggles saving an opportunity and filters by saved roles', async ({ page }) => {
     await page.goto('/opportunities');
-    // Click bookmark button on first card
-    const bookmarkBtn = page.locator('button[id^="save-opp-"]').first();
+    await page.evaluate(() => {
+      localStorage.removeItem('jobai_saved_opportunities_v2');
+      localStorage.removeItem('jobai_saved_opps');
+    });
+    await page.reload();
+
+    // Click bookmark button on first card (opp-001)
+    const bookmarkBtn = page.locator('#save-opp-opp-001');
     await bookmarkBtn.click({ force: true });
 
     // Check saved count filter button has updated label
