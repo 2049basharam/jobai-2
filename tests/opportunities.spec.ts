@@ -92,6 +92,7 @@ test.describe('Phase 7 — Opportunity Intelligence Workspace (/opportunities)',
   });
 
   test('7. toggles saving an opportunity and filters by saved roles', async ({ page }) => {
+    await page.goto('/opportunities');
     // Click bookmark button on first card
     const bookmarkBtn = page.locator('button[id^="save-opp-"]').first();
     await bookmarkBtn.click({ force: true });

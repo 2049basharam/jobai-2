@@ -395,7 +395,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
                             <span className="font-semibold">{sector.label}</span>
                             {isStandby && (
                               <span className="text-[9px] px-1 py-0.5 rounded bg-slate-900 text-amber-400 border border-amber-500/30 font-bold ml-0.5">
-                                STANDBY
+                                MODULE_STANDBY
                               </span>
                             )}
                             {!isStandby && (
