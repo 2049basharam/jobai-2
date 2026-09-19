@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Compass,
   LayoutDashboard,
@@ -76,6 +76,26 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
     }
     return 'radial';
   });
+
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Hover In / Out Handlers for Fluid Hover Expansion & Collapse
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 200);
+  };
 
   // Sync active route & hash derived state
   useEffect(() => {
@@ -196,10 +216,12 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
 
   return (
     <>
-      {/* Radial Spatial Navigator Modal Backdrop & Overlay Canvas */}
+      {/* Radial Spatial Navigator Modal Backdrop & Overlay Canvas with Hover Handlers */}
       {isOpen && (
         <div
           className="fixed inset-0 z-[90] bg-slate-950/80 backdrop-blur-md flex items-center justify-start p-2 sm:p-6 overflow-hidden animate-in fade-in duration-200"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onClick={(e) => {
             if (e.target === e.currentTarget) setIsOpen(false);
           }}
@@ -557,9 +579,11 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
         </div>
       )}
 
-      {/* Persistent Left-Edge Semi-Circular Hub Anchor Trigger */}
+      {/* Persistent Left-Edge Semi-Circular Hub Anchor Trigger with Hover Expansion */}
       <div
         className="fixed left-0 top-1/2 -translate-y-1/2 z-[100] font-mono select-none hidden md:block"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="relative group cursor-pointer flex items-center">
@@ -572,8 +596,12 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
         </div>
       </div>
 
-      {/* Top Floating Control Hub Trigger Button (Mobile & Test Compatible) */}
-      <div className="fixed z-[100] left-4 top-4 sm:left-6 sm:top-4 font-mono select-none">
+      {/* Top Floating Control Hub Trigger Button (Mobile & Test Compatible with Hover Support) */}
+      <div
+        className="fixed z-[100] left-4 top-4 sm:left-6 sm:top-4 font-mono select-none"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <button
           type="button"
           id="radial-hub-toggle"
