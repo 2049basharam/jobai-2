@@ -79,7 +79,7 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Hover In / Out Handlers for Fluid Hover Expansion & Collapse
+  // Hover In / Out Handlers with Grace Period & Boundary Check
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
@@ -88,13 +88,20 @@ export const RadialNavMenu: React.FC<Props> = ({ activeRoute, onSelectSector }) 
     setIsOpen(true);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (e?: React.MouseEvent) => {
+    if (e && e.relatedTarget) {
+      const related = e.relatedTarget as Node;
+      if (e.currentTarget && e.currentTarget.contains && e.currentTarget.contains(related)) {
+        return;
+      }
+    }
+
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 200);
+    }, 400);
   };
 
   // Sync active route & hash derived state
