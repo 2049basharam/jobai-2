@@ -111,7 +111,8 @@ test.describe('Phase 7 — Opportunity Intelligence Workspace (/opportunities)',
     await expect(savedFilterBtn).toBeVisible({ timeout: 10000 });
 
     // Toggle saved filter
-    await savedFilterBtn.click();
+    await savedFilterBtn.scrollIntoViewIfNeeded();
+    await savedFilterBtn.click({ force: true });
     await expect(page.getByRole('heading', { name: 'Senior AI & Backend Systems Engineer' })).toBeVisible({ timeout: 10000 });
   });
 

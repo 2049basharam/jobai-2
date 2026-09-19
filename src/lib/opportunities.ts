@@ -305,7 +305,17 @@ export function calculateOpportunityAlignment(
 export async function loadSavedOpportunities(): Promise<SavedOpportunity[]> {
   if (typeof window === 'undefined') return [];
 
-  // Try Supabase first
+  let localSaved: SavedOpportunity[] = [];
+  try {
+    const raw = localStorage.getItem(SAVED_OPPORTUNITIES_KEY);
+    if (raw) {
+      localSaved = JSON.parse(raw);
+    }
+  } catch (err) {
+    console.error('LocalStorage saved opportunities load error:', err);
+  }
+
+  // Try Supabase if authenticated
   try {
     const { data: authData } = await supabase.auth.getUser();
     if (authData?.user) {
@@ -325,24 +335,21 @@ export async function loadSavedOpportunities(): Promise<SavedOpportunity[]> {
       }
     }
   } catch (err) {
-    console.warn('Supabase saved opportunities read error, using localStorage fallback:', err);
+    // Ignore Supabase latency/error
   }
 
-  // LocalStorage Fallback
-  try {
-    const raw = localStorage.getItem(SAVED_OPPORTUNITIES_KEY);
-    if (raw) {
-      return JSON.parse(raw);
-    }
-  } catch (err) {
-    console.error('LocalStorage saved opportunities load error:', err);
-  }
-
-  return [];
+  return localSaved;
 }
 
 export async function toggleSaveOpportunity(opportunityId: string): Promise<SavedOpportunity[]> {
-  const existing = await loadSavedOpportunities();
+  let existing: SavedOpportunity[] = [];
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem(SAVED_OPPORTUNITIES_KEY);
+      if (raw) existing = JSON.parse(raw);
+    } catch (e) {}
+  }
+
   const isSaved = existing.some((s) => s.opportunityId === opportunityId);
 
   let updated: SavedOpportunity[];
@@ -358,32 +365,34 @@ export async function toggleSaveOpportunity(opportunityId: string): Promise<Save
     updated = [newEntry, ...existing];
   }
 
-  // Persist LocalStorage
+  // Persist LocalStorage synchronously
   if (typeof window !== 'undefined') {
     localStorage.setItem(SAVED_OPPORTUNITIES_KEY, JSON.stringify(updated));
   }
 
-  // Persist Supabase if authenticated
-  try {
-    const { data: authData } = await supabase.auth.getUser();
-    if (authData?.user) {
-      if (isSaved) {
-        await supabase
-          .from('candidate_saved_opportunities')
-          .delete()
-          .eq('user_id', authData.user.id)
-          .eq('opportunity_id', opportunityId);
-      } else {
-        await supabase.from('candidate_saved_opportunities').upsert({
-          user_id: authData.user.id,
-          opportunity_id: opportunityId,
-          saved_at: new Date().toISOString(),
-        });
+  // Async Supabase sync in background
+  (async () => {
+    try {
+      const { data: authData } = await supabase.auth.getUser();
+      if (authData?.user) {
+        if (isSaved) {
+          await supabase
+            .from('candidate_saved_opportunities')
+            .delete()
+            .eq('user_id', authData.user.id)
+            .eq('opportunity_id', opportunityId);
+        } else {
+          await supabase.from('candidate_saved_opportunities').upsert({
+            user_id: authData.user.id,
+            opportunity_id: opportunityId,
+            saved_at: new Date().toISOString(),
+          });
+        }
       }
+    } catch (err) {
+      // Ignore background sync errors
     }
-  } catch (err) {
-    console.warn('Supabase saved opportunities sync error:', err);
-  }
+  })();
 
   return updated;
 }
