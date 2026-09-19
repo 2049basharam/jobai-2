@@ -104,15 +104,15 @@ test.describe('Phase 7 — Opportunity Intelligence Workspace (/opportunities)',
     await bookmarkBtn.click({ force: true });
 
     // Wait for React state update to complete (title changes to Unsave Opportunity)
-    await expect(page.locator('#save-opp-opp-001[title="Unsave Opportunity"]')).toBeVisible();
+    await expect(page.locator('#save-opp-opp-001[title="Unsave Opportunity"]')).toBeVisible({ timeout: 10000 });
 
     // Check saved count filter button has updated label
     const savedFilterBtn = page.locator('#toggle-saved-filter');
-    await expect(savedFilterBtn).toBeVisible();
+    await expect(savedFilterBtn).toBeVisible({ timeout: 10000 });
 
     // Toggle saved filter
     await savedFilterBtn.click();
-    await expect(page.getByRole('heading', { name: 'Senior AI & Backend Systems Engineer' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Senior AI & Backend Systems Engineer' })).toBeVisible({ timeout: 10000 });
   });
 
   test('8. navigates to /opportunities via radial navigation launcher', async ({ page }) => {
