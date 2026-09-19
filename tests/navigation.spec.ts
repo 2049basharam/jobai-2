@@ -73,12 +73,11 @@ test.describe('JobAI Candidate Platform — Global Spatial Application Navigatio
     await expect(careerSector).toContainText('MODULE_STANDBY');
     await expect(careerSector).toBeDisabled();
 
-    // Verify Opportunities sector
+    // Verify Opportunities sector is active
     const oppSector = page.locator('#radial-sector-opportunities');
     await expect(oppSector).toBeVisible();
     await expect(oppSector).toContainText('Opportunities');
-    await expect(oppSector).toContainText('MODULE_STANDBY');
-    await expect(oppSector).toBeDisabled();
+    await expect(oppSector).toBeEnabled();
 
     // Verify Applications sector
     const appSector = page.locator('#radial-sector-applications');

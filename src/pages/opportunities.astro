@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { OpportunitiesWorkspace } from '../components/opportunities/OpportunitiesWorkspace';
+---
+
+<Layout title="Opportunity Intelligence Radar — JobAI Candidate Platform V2">
+  <main class="min-h-screen bg-slate-100">
+    <OpportunitiesWorkspace client:only="react" />
+  </main>
+</Layout>
